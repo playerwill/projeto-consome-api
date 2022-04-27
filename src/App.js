@@ -1,23 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import * as React from "react"
 
 function App() {
+
+  React.useEffect(()=> {
+    funcaoAssync();
+  }, [])
+
+    const [users, setUsers] = React.useState([]);
+
+    const funcaoAssync = async() =>{
+    const resultado = await fetch("https://reqres.in/api/users/");
+    const json = await resultado.json();
+    setUsers(json.data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex">
+      {users.map((user)=> { return (
+        <div class="margem" key={user.id}>
+          <p> <strong>{user.first_name} </strong></p>
+          <p> {user.email} </p>
+          <img key={user.avatar} src={user.avatar}/>
+        </div>)})}
     </div>
   );
 }
